@@ -1,20 +1,12 @@
 version: 2.1
-orbs:
-  python: circleci/python@1.2
-
 jobs:
-  build-and-test:
+  build:
+    branches:
+      only:
+        - main
     docker:
-      - image: cimg/python:3.8
+      - image: andthensome/alpine-hugo-git-bash
     steps:
-      - checkout
-      - python/install-packages:
-          pkg-manager: pip
-      - run: 
-          name: Run tests
-          command: pytest
-
-workflows:
-  samples: 
-    jobs:
-      - build-and-test
+      - run:
+          name: build site and push to github-pages
+          command: sh publish.sh
