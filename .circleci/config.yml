@@ -7,7 +7,7 @@ jobs:
     resource_class: large
     steps:
       - checkout
-      - run: echo "This is the building step!!"
+      - run: echo "This is the building step!!!"
   deploy_prod:
     machine:
       image: ubuntu-1604:202007-01
