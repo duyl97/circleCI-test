@@ -28,13 +28,13 @@ workflows:
                 - /develop.*/
                 - /feature.*/
       - deploy_stage:
-          require: 
+          requires: 
             - build
           filters:
             branches:
               only: /develop.*/
       - deploy_prod:
-          require: 
+          requires: 
             - build
           filters:
             branches:
