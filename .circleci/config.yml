@@ -25,19 +25,16 @@ workflows:
       - build:
           filters:
             branches:
-              ignore:
-                - /develop.*/
-                - /feature.*/
+              only: /.*/
       - deploy_stage:
           requires: 
             - build
           filters:
             branches:
-              only: /develop.*/
+              only: /dev.*/
       - deploy_prod:
           requires: 
             - build
           filters:
             branches:
               only: production
-              
