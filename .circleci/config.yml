@@ -25,13 +25,13 @@ workflows:
       - build:
           filters:
             branches:
-              ignore: development
+              only: /.*/
       - deploy_stage:
           requires: 
             - build
           filters:
             branches:
-              only: development
+              only: /dev.*/
       - deploy_prod:
           requires: 
             - build
