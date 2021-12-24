@@ -1,9 +1,6 @@
 version: 2.1
 jobs:
   build:
-    branches:
-      only:
-        - main
     docker:
       - image: andthensome/alpine-hugo-git-bash
     steps:
