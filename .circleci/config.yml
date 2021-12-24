@@ -20,12 +20,12 @@ workflows:
   build_deploy_production_vm:
     jobs:
       - build_production_vm
-        filters:
-          branches:
-            only: production
+          filters:
+            branches:
+              only: production
   build_deploy_staging_vm:
     jobs:
       - build_staging_vm
-        filters:
-          branches:
-            ignore: production 
+          filters:
+            branches:
+              ignore: production 
