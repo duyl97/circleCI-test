@@ -33,7 +33,7 @@ workflows:
             - build
           filters:
             branches:
-              only: /develop.*/
+              only: development
       - deploy_prod:
           requires: 
             - build
