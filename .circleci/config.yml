@@ -1,31 +1,42 @@
 version: 2.1
  
 jobs:
-  build_production_vm:
+  build:
     machine:
       image: ubuntu-1604:202007-01
     resource_class: large
     steps:
       - checkout
+  deploy_prod:
+    machine:
+      image: ubuntu-1604:202007-01
+    steps:
       - run: echo "This is the production VM"
-  build_staging_vm:
+  deploy_stage:
     machine:
       image: ubuntu-1604:202007-01
-    resource_class: large
     steps:
-      - checkout
       - run: echo "This is the staging VM"
  
 workflows:
-  build_deploy_production_vm:
+  build-deploy:
     jobs:
-      - build_production_vm
+      - build:
+          filters:
+            branches:
+              ignore:
+                - /develop.*/
+                - /feature.*/
+      - deploy_stage:
+          require: 
+            - build
+          filters:
+            branches:
+              only: /develop.*/
+      - deploy_prod:
+          require: 
+            - build
           filters:
             branches:
               only: production
-  build_deploy_staging_vm:
-    jobs:
-      - build_staging_vm
-          filters:
-            branches:
-              ignore: production 
+              
