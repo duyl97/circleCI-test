@@ -1,40 +1,60 @@
 version: 2.1
- 
-jobs:
-  build:
-    machine:
-      image: ubuntu-1604:202007-01
-    resource_class: large
-    steps:
-      - checkout
-      - run: echo "This is the building step!"
-  deploy_prod:
-    machine:
-      image: ubuntu-1604:202007-01
-    steps:
-      - run: echo "This is the production VM"
-  deploy_stage:
-    machine:
-      image: ubuntu-1604:202007-01
-    steps:
-      - run: echo "This is the staging VM"
- 
+
+parameters:
+  pull_request:
+    type: boolean
+    default: false
+
+orbs:
+  welcome: circleci/welcome-orb@0.4.1
+  hello: circleci/hello-build@0.0.5
+
 workflows:
-  build-deploy:
+  push:
+    unless: << pipeline.parameters.pull_request >>
     jobs:
-      - build:
-          filters:
-            branches:
-              only: /.*/
-      - deploy_stage:
-          requires: 
-            - build
-          filters:
-            branches:
-              only: /dev.*/
-      - deploy_prod:
-          requires: 
-            - build
-          filters:
-            branches:
-              only: production
+      - welcome/run
+
+  pull_request:
+    when: << pipeline.parameters.pull_request >>
+    jobs:
+      - hello/hello-build
+
+# jobs:
+  # build:
+  #   machine:
+  #     image: ubuntu-1604:202007-01
+  #   resource_class: large
+  #   steps:
+  #     - checkout
+  #     - run: echo "This is the building step!"
+  # deploy_prod:
+  #   machine:
+  #     image: ubuntu-1604:202007-01
+  #   steps:
+  #     - run: echo "This is the production VM"
+  # deploy_stage:
+  #   machine:
+  #     image: ubuntu-1604:202007-01
+  #   steps:
+  #     - run: echo "This is the staging VM"
+ 
+# workflows:
+  # build-deploy:
+  #   jobs:
+  #     - build:
+  #         filters:
+  #           branches:
+  #             only: /.*/
+  #     - deploy_stage:
+  #         requires: 
+  #           - build
+  #         filters:
+  #           branches:
+  #             only: /dev.*/
+  #     - deploy_prod:
+  #         requires: 
+  #           - build
+  #         filters:
+  #           branches:
+  #             only: production
