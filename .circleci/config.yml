@@ -1,24 +1,47 @@
 version: 2.1
 
-parameters:
-  pull_request:
-    type: boolean
-    default: false
+version: 2.1
 
-orbs:
-  welcome: circleci/welcome-orb@0.4.1
-  hello: circleci/hello-build@0.0.5
+parameters:
+  task:
+    type: enum
+    enum: ["build", "test", "deploy"]
+    default: "build"
+
+orbs: 
+  android: circleci/android@0.2.1
+
+job: 
+  build: 
+    executor: android/android
+    steps:
+      - run: echo "This is the building step!"
+
+  test:
+      - run: echo "This is the testing step!"
+
+  deploy:
+      - run: echo "This is the deploying step!"
 
 workflows:
-  push:
-    unless: << pipeline.parameters.pull_request >>
-    jobs:
-      - welcome/run
+  version: 2.1
+  build:
+    when:
+      equal: [ build, << pipeline.parameters.task >> ]
+      jobs:
+        - build
 
-  pull_request:
-    when: << pipeline.parameters.pull_request >>
-    jobs:
-      - hello/hello-build
+  test:
+    when:
+      equal: [ test, << pipeline.parameters.task >> ]
+      jobs:
+        - test
+
+  deploy:
+    when:
+      equal: [ deploy, << pipeline.parameters.task >> ]
+      jobs:
+        - deploy
 
 # jobs:
   # build:
