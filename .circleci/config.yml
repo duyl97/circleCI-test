@@ -1,18 +1,9 @@
 version: 2.1
 
 parameters:
-  GHA_Actor:
-    type: string
-    default: ""
-  GHA_Action:
-    type: string
-    default: ""
-  GHA_Event:
-    type: string
-    default: ""
-  GHA_Meta:
-    type: string
-    default: ""
+  pull_request:
+    type: boolean
+    default: false
 
 jobs:
   build:
@@ -35,7 +26,7 @@ jobs:
  
 workflows:
   build-deploy:
-    when: << pipeline.parameters.GHA_Action >>
+    when: << pipeline.parameters.pull_request >>
     jobs:
       - build:
           filters:
