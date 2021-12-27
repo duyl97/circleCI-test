@@ -1,18 +1,11 @@
 on:
   pull_request:
-    types: [closed]
-
+    types: [opened, reopened, synchronize, assigned, edited]
 jobs:
   trigger-circleci:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Call CircleCI API
-        run: |
-          curl \
-          -X POST \
-          -H "Content-Type: application/json" \
-          -H "Circle-Token: ${{ secrets.CIRCLE_TOKEN }}" \
-          -d '{ "branch": "production", "parameters": { "build_variant": "dev", "task": "deploy", "pull_request_title": "${{ github.event.pull_request.title }}" } }' \
-          https://circleci.com/api/v2/project/github/${{ github.event.repository.full_name }}/pipeline
+      - name: Trigger CircleCI Pipeline
+        uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.2
+        env:
+          CCI_TOKEN: ${{ secrets.CIRCLE_TOKEN }}

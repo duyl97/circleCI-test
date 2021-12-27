@@ -1,81 +1,55 @@
 version: 2.1
 
 parameters:
-  task:
-    type: enum
-    enum: ["build", "test", "deploy"]
-    default: "build"
+  GHA_Actor:
+    type: string
+    default: ""
+  GHA_Action:
+    type: string
+    default: ""
+  GHA_Event:
+    type: string
+    default: ""
+  GHA_Meta:
+    type: string
+    default: ""
 
-orbs: 
-  android: circleci/android@0.2.1
-
-job: 
-  build: 
-    executor: android/android
-    steps:
-      - run: echo "This is the building step!"
-
-  test:
-      - run: echo "This is the testing step!"
-
-  deploy:
-      - run: echo "This is the deploying step!"
-
-workflows:
-  version: 2.1
+jobs:
   build:
-    when:
-      equal: [ build, << pipeline.parameters.task >> ]
-      jobs:
-        - build
-
-  test:
-    when:
-      equal: [ test, << pipeline.parameters.task >> ]
-      jobs:
-        - test
-
-  deploy:
-    when:
-      equal: [ deploy, << pipeline.parameters.task >> ]
-      jobs:
-        - deploy
-
-# jobs:
-  # build:
-  #   machine:
-  #     image: ubuntu-1604:202007-01
-  #   resource_class: large
-  #   steps:
-  #     - checkout
-  #     - run: echo "This is the building step!"
-  # deploy_prod:
-  #   machine:
-  #     image: ubuntu-1604:202007-01
-  #   steps:
-  #     - run: echo "This is the production VM"
-  # deploy_stage:
-  #   machine:
-  #     image: ubuntu-1604:202007-01
-  #   steps:
-  #     - run: echo "This is the staging VM"
+    machine:
+      image: ubuntu-1604:202007-01
+    resource_class: large
+    steps:
+      - checkout
+      - run: echo "This is the building step!"
+  deploy_prod:
+    machine:
+      image: ubuntu-1604:202007-01
+    steps:
+      - run: echo "This is the production VM"
+  deploy_stage:
+    machine:
+      image: ubuntu-1604:202007-01
+    steps:
+      - run: echo "This is the staging VM"
  
-# workflows:
-  # build-deploy:
-  #   jobs:
-  #     - build:
-  #         filters:
-  #           branches:
-  #             only: /.*/
-  #     - deploy_stage:
-  #         requires: 
-  #           - build
-  #         filters:
-  #           branches:
-  #             only: /dev.*/
-  #     - deploy_prod:
-  #         requires: 
-  #           - build
-  #         filters:
-  #           branches:
-  #             only: production
+workflows:
+  build-deploy:
+    when: << pipeline.parameters.GHA_Action >>
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: /.*/
+      - deploy_stage:
+          requires: 
+            - build
+          filters:
+            branches:
+              only: /dev.*/
+      - deploy_prod:
+          requires: 
+            - build
+          filters:
+            branches:
+              only: production
