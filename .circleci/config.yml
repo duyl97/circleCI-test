@@ -13,6 +13,9 @@ parameters:
   GHA_Meta:
     type: string
     default: ""
+  GITHUB_REF:
+    type: string
+    default: ""
 
 jobs:
   build:
