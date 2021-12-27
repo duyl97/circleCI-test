@@ -5,7 +5,7 @@ jobs:
   trigger-circleci:
     runs-on: ubuntu-latest
     steps:
-      - name: CircleCI Trigger on Pull Request
-        uses: circleci/trigger_circleci_pipeline@v1.0
+      - name: Trigger CircleCI Pipeline
+        uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.0.2
         env:
           CCI_TOKEN: ${{ secrets.CIRCLE_TOKEN }}
