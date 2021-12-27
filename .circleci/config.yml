@@ -40,7 +40,9 @@ workflows:
       - build:
           filters:
             branches:
-              only: /.*/
+              only: 
+                - /dev.*/
+                - /prod.*/
       - deploy_stage:
           requires: 
             - build
