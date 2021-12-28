@@ -1,6 +1,8 @@
 on:
   pull_request:
     types: [closed]
+    branches: 
+      - main
 jobs:
   trigger-circleci:
     runs-on: ubuntu-latest
