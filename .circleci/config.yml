@@ -29,7 +29,6 @@ jobs:
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400"
-          overwrite: true
   deploy_stage:
     machine:
       image: ubuntu-1604:202007-01
