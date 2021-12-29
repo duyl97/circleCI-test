@@ -23,16 +23,19 @@ jobs:
       - run: echo "This is the production VM"
       - checkout
       - run: mkdir bucket && echo "This is test uploading to S3!" > bucket/build_asset.txt
-      - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_DEFAULT_REGION
       - aws-s3/sync:
-          from: bucket
-          to: 's3://awsbucketduyl97/circleCI-test/'
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400"
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_DEFAULT_REGION
+          from: bucket
+          to: 's3://awsbucketduyl97/circleCI-test/'
+      - aws-s3/copy:
+          arguments: '--dryrun'
+          from: bucket/build_asset.txt
+          to: 's3://awsbucketduyl97'
   deploy_stage:
     machine:
       image: ubuntu-1604:202007-01
