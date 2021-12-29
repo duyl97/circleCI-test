@@ -23,11 +23,13 @@ jobs:
       - run: echo "This is the production VM"
       - checkout
       - run: mkdir bucket && echo "This is test uploading to S3!" > bucket/build_asset.txt
-      - run: aws configure set default.region us-west-2
       - aws-s3/sync:
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400"
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-region: AWS_REGION
+          aws-secret-access-key: AWS_ACCESS_KEY_ID
           from: bucket
           to: 's3://awsbucketduyl97/circleCI-test/'
       - aws-s3/copy:
