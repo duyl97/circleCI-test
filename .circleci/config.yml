@@ -23,6 +23,7 @@ jobs:
       - run: echo "This is the production VM"
       - checkout
       - run: mkdir bucket && echo "This is test uploading to S3!" > bucket/build_asset.txt
+      - run: aws configure set default.region us-west-2
       - aws-s3/sync:
           arguments: |
             --acl public-read \
