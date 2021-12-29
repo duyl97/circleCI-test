@@ -22,7 +22,7 @@ jobs:
     steps:
       - run: echo "This is the production VM"
       - checkout
-      - run: mkdir bucket && echo "This is test uploading to S3" > bucket/build_asset.txt
+      - run: mkdir bucket && echo "This is test uploading to S3!" > bucket/build_asset.txt
       - aws-s3/sync:
           from: bucket
           to: 's3://awsbucketduyl97/circleCI-test'
