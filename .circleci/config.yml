@@ -28,11 +28,11 @@ jobs:
             --acl public-read \
             --cache-control "max-age=86400"
           from: bucket
-          to: 's3://awsbucketduyl97/circleCI-test/'
+          to: 's3://awsbucketduyl/circleCI-test/'
       - aws-s3/copy:
           arguments: '--dryrun'
           from: bucket/build_asset.txt
-          to: 's3://awsbucketduyl97'
+          to: 's3://awsbucketduyl'
   deploy_stage:
     machine:
       image: ubuntu-1604:202007-01
