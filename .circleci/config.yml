@@ -29,7 +29,7 @@ jobs:
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400" \
-            --source-region ap-southeast-1
+            --region ap-southeast-1
       - aws-s3/copy:
           arguments: '--dryrun'
           from: bucket/build_asset.txt
