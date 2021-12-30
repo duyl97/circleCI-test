@@ -31,6 +31,7 @@ jobs:
           name: Deploy to S3
           command: aws s3 sync bucket s3://awsbucketduyl97/circleCI-test/ 
 workflows:
+  version: 2
   build-deploy:
     when: << pipeline.parameters.pull_request >>
     jobs:
