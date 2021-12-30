@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 
 parameters:
   pull_request:
@@ -23,7 +23,13 @@ jobs:
       image: ubuntu-1604:202007-01
     steps:
       - run: echo "This is the staging VM"
- 
+      - run: mkdir bucket && echo "This is test uploading to S3!" > bucket/build_asset.txt
+      - run:
+          name: Install awscli
+          command: sudo pip install awscli
+      - run:
+          name: Deploy to S3
+          command: aws s3 sync bucket s3://awsbucketduyl97/circleCI-test/ 
 workflows:
   build-deploy:
     when: << pipeline.parameters.pull_request >>
