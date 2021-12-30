@@ -10,12 +10,15 @@ parameters:
 
 jobs:
   build:
-    docker:
-      image: 'cimg/python:3.6'
+    machine:
+      image: ubuntu-1604:202007-01
+    resource_class: large
     steps:
       - checkout
       - run: echo "This is the building step!"
   deploy_prod:
+    machine:
+      image: ubuntu-1604:202007-01
     steps:
       - run: echo "This is the production VM"
       - checkout
@@ -31,6 +34,8 @@ jobs:
           from: bucket/build_asset.txt
           to: 's3://awsbucketduyl97'
   deploy_stage:
+    machine:
+      image: ubuntu-1604:202007-01
     steps:
       - run: echo "This is the staging VM"
  
