@@ -31,8 +31,6 @@ jobs:
           from: bucket/build_asset.txt
           to: 's3://awsbucketduyl97'
   deploy_stage:
-    docker:
-      image: 'cimg/python:3.6'
     steps:
       - run: echo "This is the staging VM"
  
