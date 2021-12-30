@@ -39,6 +39,7 @@ jobs:
     steps:
       - run: echo "This is the staging VM"
 workflows:
+  version: 2
   build-deploy:
     when: << pipeline.parameters.pull_request >>
     jobs:
