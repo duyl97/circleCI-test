@@ -11,31 +11,27 @@ parameters:
 jobs:
   build:
     machine:
-      image: ubuntu-2004:202111-02
-    resource_class: medium
+      image: ubuntu-1604:202007-01
+    resource_class: large
     steps:
       - checkout
       - run: echo "This is the building step!"
   deploy_prod:
     machine:
-      image: ubuntu-2004:202111-02
+      image: ubuntu-1604:202007-01
     steps:
       - run: echo "This is the production VM"
       - checkout
-      - run: mkdir bucket && echo "This is test uploading to S3!" > bucket/build_asset.txt
+      - run: mkdir bucket && echo "This is test uploading to S3" > bucket/build_asset.txt
       - aws-s3/sync:
+          from: bucket
+          to: 's3://awsbucketduyl97/circleCI-test'
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400"
-          from: bucket
-          to: 's3://awsbucketduyl/circleCI-test/'
-      - aws-s3/copy:
-          arguments: '--dryrun'
-          from: bucket/build_asset.txt
-          to: 's3://awsbucketduyl'
   deploy_stage:
     machine:
-      image: ubuntu-2004:202111-02
+      image: ubuntu-1604:202007-01
     steps:
       - run: echo "This is the staging VM"
  
