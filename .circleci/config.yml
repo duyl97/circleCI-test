@@ -11,14 +11,14 @@ parameters:
 jobs:
   build:
     machine:
-      image: ubuntu-1604:202007-01
-    resource_class: large
+      image: ubuntu-2004:202111-02
+    resource_class: medium
     steps:
       - checkout
       - run: echo "This is the building step!"
   deploy_prod:
     machine:
-      image: ubuntu-1604:202007-01
+      image: ubuntu-2004:202111-02
     steps:
       - run: echo "This is the production VM"
       - checkout
@@ -35,7 +35,7 @@ jobs:
           to: 's3://awsbucketduyl'
   deploy_stage:
     machine:
-      image: ubuntu-1604:202007-01
+      image: ubuntu-2004:202111-02
     steps:
       - run: echo "This is the staging VM"
  
