@@ -8,19 +8,32 @@ parameters:
 jobs:
   build:
     machine:
-      image: ubuntu-1604:202007-01
-    resource_class: large
+      image: ubuntu-2004:202010-01
+    resource_class: medium
     steps:
       - checkout
-      - run: echo "This is the building step!"
+      - run:
+          name: Installing AWS CLI
+          command: |
+            sudo apt-get update
+            sudo apt install python3-pip
+            sudo pip3 install awsebcli --upgrade
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
   deploy_prod:
     machine:
-      image: ubuntu-1604:202007-01
+      image: ubuntu-2004:202010-01
     steps:
       - run: echo "This is the production VM"
+      - attach_workspace:
+          at: .
+      - checkout
+      - run: aws s3 sync ./app s3://awsbucketduyl97
   deploy_stage:
     machine:
-      image: ubuntu-1604:202007-01
+      image: ubuntu-2004:202010-01
     steps:
       - run: echo "This is the staging VM"
       - run: mkdir bucket && echo "This is test uploading to S3!" > bucket/build_asset.txt
