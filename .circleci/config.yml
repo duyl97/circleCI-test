@@ -30,7 +30,7 @@ jobs:
       - attach_workspace:
           at: .
       - checkout
-      - run: aws s3 sync ./app s3://awsbucketduyl/circleCI-test/
+      - run: aws s3 sync ./app s3://awsbucketduyl97
   deploy_stage:
     machine:
       image: ubuntu-2004:202010-01
