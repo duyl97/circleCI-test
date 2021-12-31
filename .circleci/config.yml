@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs: 
+  aws-s3: circleci/aws-s3@3.0.0
+
 parameters:
   pull_request:
     type: boolean
@@ -8,41 +11,30 @@ parameters:
 jobs:
   build:
     machine:
-      image: ubuntu-2004:202010-01
-    resource_class: medium
+      image: ubuntu-1604:202007-01
+    resource_class: large
     steps:
       - checkout
-      - run:
-          name: Installing AWS CLI
-          command: |
-            sudo apt-get update
-            sudo apt install python3-pip
-            sudo pip3 install awsebcli --upgrade
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
+      - run: echo "This is the building step!"
   deploy_prod:
     machine:
-      image: ubuntu-2004:202010-01
+      image: ubuntu-1604:202007-01
     steps:
       - run: echo "This is the production VM"
-      - attach_workspace:
-          at: .
       - checkout
-      - run: aws s3 sync ./app s3://awsbucketduyl97
+      - run: mkdir bucket && echo "This is test uploading to S3" > bucket/build_asset.txt
+      - aws-s3/sync:
+          from: bucket
+          to: 's3://awsbucketduyl97/circleCI-test'
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400"
   deploy_stage:
     machine:
-      image: ubuntu-2004:202010-01
+      image: ubuntu-1604:202007-01
     steps:
       - run: echo "This is the staging VM"
-      - run: mkdir bucket && echo "This is test uploading to S3!" > bucket/build_asset.txt
-      - run:
-          name: Install awscli
-          command: sudo pip install awscli
-      - run:
-          name: Deploy to S3
-          command: aws s3 sync bucket s3://awsbucketduyl97/circleCI-test/ 
+ 
 workflows:
   build-deploy:
     when: << pipeline.parameters.pull_request >>
