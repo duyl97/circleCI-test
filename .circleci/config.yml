@@ -51,6 +51,8 @@ workflows:
             branches:
               only: /dev.*/
       - deploy_prod:
+          context:
+            - aws-credentials
           requires: 
             - build
           filters:
